@@ -1,5 +1,5 @@
-# Build stage - use Debian base (not Alpine) for better compatibility on Render
-FROM eclipse-temurin:17-jdk-jammy AS build
+# Build stage - Maven image includes JDK 17 + mvn
+FROM maven:3.9-eclipse-temurin-17 AS build
 WORKDIR /app
 
 # Limit Maven memory to avoid OOM on Render free tier (512MB)
