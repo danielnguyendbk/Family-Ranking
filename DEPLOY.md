@@ -43,14 +43,18 @@ docker run -e PORT=8080 -p 8080:8080 family-ranking
 
 | Key | Value |
 |-----|-------|
-| `DB_URL` | Internal Database URL từ bước 1 (thay `postgresql://` → `jdbc:postgresql://`) |
-| `DB_USERNAME` | Username của PostgreSQL database |
-| `DB_PASSWORD` | Password của PostgreSQL database |
+| `DB_URL` | Chỉ **host + port + database**: `jdbc:postgresql://HOST:5432/TÊN_DB` (xem ghi chú bên dưới) |
+| `DB_USERNAME` | Username của PostgreSQL (vd: `daniel`) |
+| `DB_PASSWORD` | Password của PostgreSQL |
 | `JWT_SECRET` | Chuỗi bí mật ngẫu nhiên (≥ 32 ký tự hex) |
 | `FRONTEND_URL` | URL của frontend sau khi deploy (vd: `https://family-ranking.onrender.com`) |
 
-> **Lưu ý về DB_URL**: Render trả về URL dạng `postgresql://user:pass@host/db`.  
-> Cần đổi thành `jdbc:postgresql://user:pass@host/db` (thêm `jdbc:` ở đầu).
+> **Quan trọng – DB_URL**: PostgreSQL JDBC **không** chấp nhận user/pass trong URL.  
+> Render cho URL dạng `postgresql://user:pass@host/db` → bạn phải **tách** và điền:
+> - **DB_URL** = `jdbc:postgresql://HOST:5432/TÊN_DB` (ví dụ: `jdbc:postgresql://dpg-xxxxx-a:5432/familydb_5ly1`)
+> - **DB_USERNAME** = user từ URL (vd: `daniel`)
+> - **DB_PASSWORD** = password từ URL  
+> Không được đặt cả chuỗi `jdbc:postgresql://user:pass@host/db` vào DB_URL.
 
 4. Click **Create Web Service** → đợi build xong
 
