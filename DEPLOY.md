@@ -20,23 +20,24 @@ Database (PostgreSQL)  ──►  Render PostgreSQL
 
 ## 2. Deploy Backend (Spring Boot)
 
-### Chuẩn bị
+Render **không hỗ trợ Java trực tiếp**. Backend dùng **Docker** (đã có sẵn `family-ranking/Dockerfile`).
 
-Đảm bảo project build được:
+### Chuẩn bị (tùy chọn, kiểm tra local)
+
 ```bash
 cd family-ranking
-mvn clean package -DskipTests
+docker build -t family-ranking .
+docker run -e PORT=8080 -p 8080:8080 family-ranking
 ```
-File JAR sẽ nằm ở `target/family-ranking-0.0.1-SNAPSHOT.jar`.
 
 ### Tạo Web Service trên Render
 
-1. **New → Web Service** → kết nối GitHub repo
+1. **New → Web Service** → chọn repo GitHub
 2. Cấu hình:
    - **Root Directory**: `family-ranking`
-   - **Runtime**: `Java`
-   - **Build Command**: `mvn clean package -DskipTests`
-   - **Start Command**: `java -jar target/family-ranking-0.0.1-SNAPSHOT.jar`
+   - **Runtime**: **Docker** (chọn Docker, không chọn Java)
+   - **Build Command**: để trống (Dockerfile tự build)
+   - **Start Command**: để trống (Dockerfile tự chạy)
 
 3. Thêm **Environment Variables**:
 
@@ -47,7 +48,6 @@ File JAR sẽ nằm ở `target/family-ranking-0.0.1-SNAPSHOT.jar`.
 | `DB_PASSWORD` | Password của PostgreSQL database |
 | `JWT_SECRET` | Chuỗi bí mật ngẫu nhiên (≥ 32 ký tự hex) |
 | `FRONTEND_URL` | URL của frontend sau khi deploy (vd: `https://family-ranking.onrender.com`) |
-| `PORT` | `8080` (Render tự set, không cần thiết) |
 
 > **Lưu ý về DB_URL**: Render trả về URL dạng `postgresql://user:pass@host/db`.  
 > Cần đổi thành `jdbc:postgresql://user:pass@host/db` (thêm `jdbc:` ở đầu).
